@@ -29,6 +29,18 @@ public class List {
     }
 
     void changePriority(Item item, int newPriority) {
+
+        Item itemToChangePriority = item;
+        System.out.println("IP: " + item);
+        //int newestPriority = newPriority;
+
+        System.out.println("ITCP: " + itemToChangePriority);
+        System.out.println("Newpriority: " + newPriority);
+        for(Item i : items){
+            System.out.println("i: " +items.indexOf(i));
+            item.setPriority(newPriority);
+        }
+
         //todo - find item in the list of items
         //todo change its priority to newPriority
         //todo change any other items to the correct priority, to shift them up or down, as needed
@@ -44,5 +56,6 @@ public class List {
     int getMaxPriority()  {
         return newItemPriority - 1;  //so if there's 4 items, newItemPriority will be 5
     }
+
 
 }

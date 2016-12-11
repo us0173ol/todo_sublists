@@ -8,6 +8,14 @@ public class Item implements Comparable<Item> {
     String task;
     int priority;
 
+    public int getPriority() {
+        return priority;
+    }
+
+    public void setPriority(int priority) {
+        this.priority = priority;
+    }
+
     Item(String task) {
         this.task = task;
 
@@ -24,6 +32,6 @@ public class Item implements Comparable<Item> {
 
     @Override
     public String toString() {
-        return task; // todo priority etc.
+        return "priority: "+ priority + " task: " + task; // todo priority etc.
     }
 }

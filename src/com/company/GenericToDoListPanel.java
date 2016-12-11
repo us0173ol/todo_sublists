@@ -22,7 +22,7 @@ public class GenericToDoListPanel extends JPanel {
 
     // todo need to ensure that names need to be unique, they are used to figure out what updated. Alternatively, replace with a unique id
 
-    GenericToDoListPanel(List theList, ToDoGUI gui) {
+    GenericToDoListPanel(final List theList, ToDoGUI gui) {
 
         todoGUI = gui;
         this.list = theList;
@@ -51,6 +51,17 @@ public class GenericToDoListPanel extends JPanel {
         changePriorityComboBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+
+                if (changePriorityComboBox.getSelectedIndex() != -1){
+                    System.out.println("selected: " +changePriorityComboBox.getSelectedIndex());
+                    Item itemToChange = list.items.get(changePriorityComboBox.getSelectedIndex());
+                    System.out.println("GTDLPitemTC: " + itemToChange);
+                    int newPriority = changePriorityComboBox.getSelectedIndex() +1;
+                    System.out.println("GTDLPnewP: " + newPriority);
+//                    itemToChange.setPriority(changePriorityComboBox.getSelectedIndex() + 1);
+//                    System.out.println(itemToChange);
+                    list.changePriority(itemToChange, newPriority);
+                }
 
                 //todo add listener to combobox, change priority of items, notify todoGUI so can update everything - lists held in GUI and in DB
                 todoGUI.listUpdated(list);
