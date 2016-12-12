@@ -28,7 +28,10 @@ public class Controller {
 
 
         Item test1 = new Item("walk dog");
-        Item test2 = new Item("buy cheese");
+        Item test2 = new Item("buy diapers");
+        Item test7 = new Item("groceries");
+        Item test8 = new Item("gym");
+
 
         Item test3 = new Item("run 5k");
         Item test4 = new Item("do pull ups");
@@ -39,6 +42,8 @@ public class Controller {
         mainList = new List("main", true);   // name of list, is mainlist or not
         mainList.add(test1);
         mainList.add(test2);
+        mainList.add(test7);
+        mainList.add(test8);
 
         List gymList = new List("gym", false);
         gymList.add(test3);

@@ -44,7 +44,7 @@ public class ToDoGUI extends JFrame {
         addListeners();
 
         displayAllLists();
-
+        setSize(600,400);
         setVisible(true);
 
     }
@@ -67,6 +67,7 @@ public class ToDoGUI extends JFrame {
                 mainList.add(item);
                 controller.listUpdated(mainList);
                 displayAllLists();
+
             }
         });
     }

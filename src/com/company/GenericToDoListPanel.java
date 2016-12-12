@@ -53,8 +53,9 @@ public class GenericToDoListPanel extends JPanel {
             public void actionPerformed(ActionEvent e) {
 
                 if (changePriorityComboBox.getSelectedIndex() != -1){
-                    System.out.println("selected: " +changePriorityComboBox.getSelectedIndex());
-                    Item itemToChange = list.items.get(changePriorityComboBox.getSelectedIndex());
+                    System.out.println("selected: " +todoItemsList.getSelectedIndex());
+                    Item itemToChange = todoItemsList.getSelectedValue();
+
                     System.out.println("GTDLPitemTC: " + itemToChange);
                     int newPriority = changePriorityComboBox.getSelectedIndex() +1;
                     System.out.println("GTDLPnewP: " + newPriority);
@@ -79,8 +80,12 @@ public class GenericToDoListPanel extends JPanel {
 
         for (Item item : list.getAllItems()) {
             itemsModel.addElement(item);
-        }
 
+        }
+//        for(int x = 1; x<= list.getMaxPriority(); x++){
+//            changePriorityComboBox.removeItem(x);
+//            changePriorityComboBox.addItem(x);
+//        }
         //todo update combobox
 
 

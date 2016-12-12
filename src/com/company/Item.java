@@ -22,6 +22,9 @@ public class Item implements Comparable<Item> {
         //The containing list object will set, and manage the priority of this item
     }
 
+    public void adjustPriority(int alpha){
+        this.priority += alpha;
+    }
     //So that the a list of Items can be sorted in priority order, lowest at the start
     @Override
     public int compareTo(Item otherItem) {

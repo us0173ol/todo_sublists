@@ -29,24 +29,44 @@ public class List {
     }
 
     void changePriority(Item item, int newPriority) {
+        int currentPriority = item.getPriority();
+        item.setPriority(newPriority);
+        if(newPriority < currentPriority) {
 
-        Item itemToChangePriority = item;
-        System.out.println("IP: " + item);
-        //int newestPriority = newPriority;
-
-        System.out.println("ITCP: " + itemToChangePriority);
-        System.out.println("Newpriority: " + newPriority);
-        for(Item i : items){
-            System.out.println("i: " +items.indexOf(i));
-            item.setPriority(newPriority);
+            for( int i = newPriority-1; i < currentPriority-1; i++){
+                    //items.get(i).setPriority(item.getPriority()+1);
+                items.get(i).adjustPriority(1);
+                System.out.println("ITCP: " + item);
+                System.out.println("Newpriority: " + newPriority);
+//
+            }
+            //item.setPriority(newPriority);
+            }
+        if(newPriority > currentPriority){
+            for(int i = currentPriority; i < newPriority; i++){
+                items.get(i).adjustPriority(-1);
+            }
         }
+
+        ArrayList<Item> newItemList = new ArrayList<Item>();
+        for(int x = 0; x < items.size(); x++){
+            newItemList.add(items.get(x));
+        }
+        Collections.sort(newItemList);
+
+        items.clear();
+
+        for(Item i: newItemList){
+            items.add(i);
+        }
+
 
         //todo - find item in the list of items
         //todo change its priority to newPriority
         //todo change any other items to the correct priority, to shift them up or down, as needed
 
         //sort list
-        Collections.sort(items);
+        //Collections.sort(items);
     }
 
     ArrayList<Item> getAllItems() {
