@@ -73,7 +73,10 @@ public class GenericToDoListPanel extends JPanel {
         });
 
     }
-    public void getItemName(){
+    public Item getSelectedItem(){
+        
+        Item selected = todoItemsList.getSelectedValue();
+        return selected;
 
     }
 
@@ -94,8 +97,10 @@ public class GenericToDoListPanel extends JPanel {
 //        }
         //todo update combobox
 
+        updateComboBox();
 
     }
+    
     void updateComboBox(){
 
         for(int i = 1; i <= list.getMaxPriority(); i++) {
