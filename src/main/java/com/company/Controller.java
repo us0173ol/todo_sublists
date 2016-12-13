@@ -44,10 +44,10 @@ public class Controller {
             System.out.print("Priority: " + rss.getInt(1));
             System.out.println("Task: " + rss.getString(2));
         }
-        rs.close();
-        rss.close();
-        statement.close();
-        connection.close();
+//        rs.close();
+//        rss.close();
+//        statement.close();
+//        connection.close();
 
         }catch (Exception e ){
             System.out.println(e);
