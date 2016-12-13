@@ -1,6 +1,8 @@
 package com.company;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -20,6 +22,8 @@ public class ToDoGUI extends JFrame {
     private JPanel mainListPanel;          //contains the main list, a GenericToDoListPanel
     private JPanel sublistPanel;           // contains a tabbed pane of sublists, also GenericToDoListPanel objects
     private JTabbedPane sublistTabbedPane;
+    private JButton addToSublistsButton;
+    private JButton newListButton;
 
 
     GenericToDoListPanel mainToDoListPanel;
@@ -29,7 +33,7 @@ public class ToDoGUI extends JFrame {
     List mainList;
     ArrayList<List> sublists;
 
-    ToDoGUI(Controller controller, List mainList, ArrayList<List> sublists) {
+    ToDoGUI(final Controller controller, final List mainList, final ArrayList<List> sublists) {
 
         this.controller = controller;
 
@@ -47,6 +51,48 @@ public class ToDoGUI extends JFrame {
         setSize(600,400);
         setVisible(true);
 
+
+
+        List selectedList = sublists.get(sublistTabbedPane.getSelectedIndex());
+        addToSublistsButton.setText("Add to\n " + selectedList.name);
+
+        addToSublistsButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(newItemTask != null){
+                    Item item = new Item(newItemTask.getText());
+                    List listToAddTo = sublists.get(sublistTabbedPane.getSelectedIndex());
+                    listToAddTo.add(item);
+                    controller.listUpdated(listToAddTo);
+                    displayAllLists();
+                    addToSublistsButton.setText("Add to\n" + listToAddTo.name);
+                    newItemTask.setText("");
+                    newItemTask.grabFocus();
+
+                }
+            }
+        });
+        newListButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String listName = JOptionPane.showInputDialog(ToDoGUI.this, "Enter List Name", "");
+                List newList = new List(listName, false);
+                GenericToDoListPanel newSublist = new GenericToDoListPanel(newList, ToDoGUI.this);
+                sublistTabbedPane.add(newSublist);
+                sublistTabbedPane.addTab(listName, newSublist);
+                sublists.add(newList);
+                setSublists(sublists);
+                mainToDoListPanel.updateComboBox();
+            }
+        });
+        sublistTabbedPane.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                List selectedList = sublists.get(sublistTabbedPane.getSelectedIndex());
+                addToSublistsButton.setText("Add to\n " + selectedList.name);
+                mainToDoListPanel.updateComboBox();
+            }
+        });
     }
 
     void setMainList(List list) {
@@ -63,10 +109,18 @@ public class ToDoGUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //todo validate something is entered, clear JTextField after entry added
-                Item item = new Item(newItemTask.getText());
-                mainList.add(item);
-                controller.listUpdated(mainList);
-                displayAllLists();
+                if(newItemTask != null) {
+                    Item item = new Item(newItemTask.getText());
+                    mainList.add(item);
+                    controller.listUpdated(mainList);
+                    displayAllLists();
+                    mainToDoListPanel.updateComboBox();
+                    newItemTask.setText("");
+                    newItemTask.grabFocus();
+
+                }else{
+                    JOptionPane.showMessageDialog(ToDoGUI.this, "Please enter something");
+                }
 
             }
         });
@@ -115,8 +169,8 @@ public class ToDoGUI extends JFrame {
             int tabs = sublistTabbedPane.getTabCount();
             for (int tab = 0 ; tab < tabs ; tab++)  {
 
-              //  GenericToDoListPanel listPanel = (GenericToDoListPanel)sublistTabbedPane.getComponentAt(tab);
-              //  listPanel.updateList();
+                GenericToDoListPanel listPanel = (GenericToDoListPanel)sublistTabbedPane.getComponentAt(tab);
+                listPanel.updateList();
 
             }
         }
@@ -140,6 +194,7 @@ public class ToDoGUI extends JFrame {
 
             GenericToDoListPanel subListPanel = new GenericToDoListPanel(sublist, this);
             sublistTabbedPane.addTab(sublist.name, subListPanel);
+
 
         }
 

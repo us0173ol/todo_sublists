@@ -38,9 +38,8 @@ public class List {
                 items.get(i).adjustPriority(1);
                 System.out.println("ITCP: " + item);
                 System.out.println("Newpriority: " + newPriority);
-//
+
             }
-            //item.setPriority(newPriority);
             }
         if(newPriority > currentPriority){
             for(int i = currentPriority; i < newPriority; i++){
@@ -66,7 +65,7 @@ public class List {
         //todo change any other items to the correct priority, to shift them up or down, as needed
 
         //sort list
-        //Collections.sort(items);
+        Collections.sort(items);
     }
 
     ArrayList<Item> getAllItems() {
@@ -76,6 +75,5 @@ public class List {
     int getMaxPriority()  {
         return newItemPriority - 1;  //so if there's 4 items, newItemPriority will be 5
     }
-
 
 }

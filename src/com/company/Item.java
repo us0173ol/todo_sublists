@@ -28,13 +28,17 @@ public class Item implements Comparable<Item> {
     //So that the a list of Items can be sorted in priority order, lowest at the start
     @Override
     public int compareTo(Item otherItem) {
-        return otherItem.priority - this.priority;
+        return this.priority - otherItem.priority;
     }
 
     //todo a to string method
 
     @Override
     public String toString() {
-        return "priority: "+ priority + " task: " + task; // todo priority etc.
+        return priority + ";" + task; // todo priority etc.
+    }
+
+    public String getTask() {
+        return task;
     }
 }

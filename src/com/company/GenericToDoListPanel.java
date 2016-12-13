@@ -41,38 +41,43 @@ public class GenericToDoListPanel extends JPanel {
         todoItemsList.setModel(itemsModel);
 
         updateList();
+        updateComboBox();
 
-        int highestPriority = list.getMaxPriority();
-        for (int p = 1; p <= highestPriority; p++) {
-            changePriorityComboBox.addItem(p);
-        }
+//        int highestPriority = list.getMaxPriority();
+//        for (int p = 1; p <= highestPriority; p++) {
+//            changePriorityComboBox.addItem(p);
+//        }
 
 
         changePriorityComboBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                if (changePriorityComboBox.getSelectedIndex() != -1){
-                    System.out.println("selected: " +todoItemsList.getSelectedIndex());
+                if (changePriorityComboBox.getSelectedIndex() != -1 && todoItemsList.getSelectedIndex() != -1) {
                     Item itemToChange = todoItemsList.getSelectedValue();
-
-                    System.out.println("GTDLPitemTC: " + itemToChange);
-                    int newPriority = changePriorityComboBox.getSelectedIndex() +1;
-                    System.out.println("GTDLPnewP: " + newPriority);
-//                    itemToChange.setPriority(changePriorityComboBox.getSelectedIndex() + 1);
-//                    System.out.println(itemToChange);
+                    int newPriority = changePriorityComboBox.getSelectedIndex() + 1;
+                    System.out.println(itemToChange);
+                    System.out.println(newPriority);
                     list.changePriority(itemToChange, newPriority);
+                    updateComboBox();
+                } else //if (changePriorityComboBox.getSelectedIndex() != -1 && list.) {
+                {
+                    System.out.println("");
                 }
 
                 //todo add listener to combobox, change priority of items, notify todoGUI so can update everything - lists held in GUI and in DB
                 todoGUI.listUpdated(list);
 
+
             }
         });
 
     }
+    public void getItemName(){
 
-    void updateList() {
+    }
+
+    public void updateList() {
 
         //refresh JList
 
@@ -82,6 +87,7 @@ public class GenericToDoListPanel extends JPanel {
             itemsModel.addElement(item);
 
         }
+
 //        for(int x = 1; x<= list.getMaxPriority(); x++){
 //            changePriorityComboBox.removeItem(x);
 //            changePriorityComboBox.addItem(x);
@@ -90,5 +96,14 @@ public class GenericToDoListPanel extends JPanel {
 
 
     }
+    void updateComboBox(){
 
-}
+        for(int i = 1; i <= list.getMaxPriority(); i++) {
+                changePriorityComboBox.removeItem(i);
+                changePriorityComboBox.addItem(i);
+
+            }
+        }
+    }
+
+
