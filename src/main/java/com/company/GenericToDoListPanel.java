@@ -82,7 +82,6 @@ public class GenericToDoListPanel extends JPanel {
         //refresh JList
 
         itemsModel.clear();
-        itemsModel.clear();
 
         for (Item item : list.getAllItems()) {
             itemsModel.addElement(item);
