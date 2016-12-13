@@ -75,7 +75,22 @@ public class ToDoGUI extends JFrame {
         newListButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String listName = JOptionPane.showInputDialog(ToDoGUI.this, "Enter List Name", "");
+                
+                String listName;
+                Item selected = mainToDoListPanel.getSelectedItem();
+                if (selected != null) {
+                    listName = selected.getTask();
+                } else   {
+                    listName = JOptionPane.showInputDialog(ToDoGUI.this, "Enter List Name", "");
+                    //todo verify that the list name the user enters is not blank
+                    
+                    if (listName == null) {
+                        System.out.println("user cancelled (?)");
+                        return;
+                    }
+                }
+                
+                //String listName = JOptionPane.showInputDialog(ToDoGUI.this, "Enter List Name", "");
                 List newList = new List(listName, false);
                 GenericToDoListPanel newSublist = new GenericToDoListPanel(newList, ToDoGUI.this);
                 sublistTabbedPane.add(newSublist);
@@ -83,6 +98,7 @@ public class ToDoGUI extends JFrame {
                 sublists.add(newList);
                 setSublists(sublists);
                 mainToDoListPanel.updateComboBox();
+                
             }
         });
         sublistTabbedPane.addChangeListener(new ChangeListener() {
