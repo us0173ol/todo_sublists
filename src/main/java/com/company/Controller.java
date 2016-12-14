@@ -1,7 +1,5 @@
 package com.company;
 
-
-import java.sql.*;
 import java.util.ArrayList;
 
 /**
@@ -9,10 +7,7 @@ import java.util.ArrayList;
  */
 public class Controller {
 
-    static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
-    static final String DB_CONNECTION_URL = "jdbc:mysql://localhost:3306/ToDoLists";
-    static final String USER = "mikey";
-    static final String PASSWORD = "mikedodge";
+    static DB db;
 
 
     public static void main(String[] args) throws Exception{
@@ -23,35 +18,10 @@ public class Controller {
     }
 
     void startApp() {
+        db = new DB();
+        db.createTable("mainList");
 
-        try{
-        Class.forName(JDBC_DRIVER);
-        Connection connection = DriverManager.getConnection(DB_CONNECTION_URL, USER, PASSWORD);
-        Statement statement = connection.createStatement();
 
-        statement.execute("CREATE TABLE IF NOT EXISTS ToDoLists (Priority INTEGER , Task VARCHAR (50))");
-        statement.execute("INSERT INTO ToDoLists VALUES (1, 'Gym')");
-
-        statement.execute("CREATE TABLE IF NOT EXISTS SubLists (Priority INTEGER , Task VARCHAR (50))");
-        statement.execute("INSERT INTO SubLists VALUES (1, 'Push Ups')");
-
-        ResultSet rs = statement.executeQuery("SELECT * FROM ToDoLists");
-        ResultSet rss = statement.executeQuery("SELECT * FROM SubLists");
-
-        while (rs.next() && rss.next()) {
-            System.out.print("Priority: " + rs.getInt(1));
-            System.out.println("Task: " + rs.getString(2));
-            System.out.print("Priority: " + rss.getInt(1));
-            System.out.println("Task: " + rss.getString(2));
-        }
-//        rs.close();
-//        rss.close();
-//        statement.close();
-//        connection.close();
-
-        }catch (Exception e ){
-            System.out.println(e);
-        }
         //todo when reading from DB, this is where you'd fetch data from DB and send it to gui.
 
 
@@ -59,13 +29,14 @@ public class Controller {
         List mainList;
         ArrayList<List> sublists = new ArrayList<List>();   //todo is this the best way to manage the sublists?
 
+        Item test2 = new Item("gym");
 
 
-        Item test3 = new Item("run 5k");
-        Item test4 = new Item("do pull ups");
+        Item test3 = new Item("Push ups");
+        Item test4 = new Item("Pull ups");
 
         mainList = new List("main", true);   // name of list, is mainlist or not
-
+        mainList.add(test2);
 
         List gymList = new List("gym", false);
         gymList.add(test3);
@@ -76,10 +47,17 @@ public class Controller {
         ToDoGUI gui = new ToDoGUI(this, mainList, sublists);    //send a reference to this object to the GUI. Then the GUI can save this reference, and then has a place to send requests to
 
 
+        gui.setMainList(mainList);
+        gui.setSublists(sublists);
+
     }
 
 
     public void listUpdated(List updatedList) {
+
+        db.createTable(updatedList.name);
         //todo update the database - use updatedList.name and updatedList.isMainList to figure out what part of the DB to update
     }
+    void addTaskToDatabase(Item item){ db.addItem(item);}
+    void delete(String tableName, Item item){ db.delete(tableName,item);}
 }

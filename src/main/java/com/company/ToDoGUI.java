@@ -52,10 +52,10 @@ public class ToDoGUI extends JFrame {
         setVisible(true);
 
 
-
-        List selectedList = sublists.get(sublistTabbedPane.getSelectedIndex());
-        addToSublistsButton.setText("Add to\n " + selectedList.name);
-
+        if(sublistTabbedPane.getSelectedIndex() != -1) {
+            List selectedList = sublists.get(sublistTabbedPane.getSelectedIndex());
+            addToSublistsButton.setText("Add to\n " + selectedList.name);
+        }
         addToSublistsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -66,6 +66,7 @@ public class ToDoGUI extends JFrame {
                     controller.listUpdated(listToAddTo);
                     displayAllLists();
                     addToSublistsButton.setText("Add to\n" + listToAddTo.name);
+                    controller.addTaskToDatabase(item);
                     newItemTask.setText("");
                     newItemTask.grabFocus();
 
@@ -104,6 +105,7 @@ public class ToDoGUI extends JFrame {
         sublistTabbedPane.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
+
                 List selectedList = sublists.get(sublistTabbedPane.getSelectedIndex());
                 addToSublistsButton.setText("Add to\n " + selectedList.name);
                 mainToDoListPanel.updateComboBox();
@@ -131,6 +133,7 @@ public class ToDoGUI extends JFrame {
                     controller.listUpdated(mainList);
                     displayAllLists();
                     mainToDoListPanel.updateComboBox();
+                    controller.addTaskToDatabase(item);
                     newItemTask.setText("");
                     newItemTask.grabFocus();
 

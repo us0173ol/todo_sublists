@@ -35,7 +35,7 @@ public class Item implements Comparable<Item> {
 
     @Override
     public String toString() {
-        return priority + ";" + task; // todo priority etc.
+        return priority + "  " + task; // todo priority etc.
     }
 
     public String getTask() {

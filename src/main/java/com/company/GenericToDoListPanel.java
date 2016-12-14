@@ -90,7 +90,7 @@ public class GenericToDoListPanel extends JPanel {
             itemsModel.addElement(item);
 
         }
-
+        updateComboBox();
 //        for(int x = 1; x<= list.getMaxPriority(); x++){
 //            changePriorityComboBox.removeItem(x);
 //            changePriorityComboBox.addItem(x);
