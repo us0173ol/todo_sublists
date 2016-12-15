@@ -35,11 +35,12 @@ public class DB {
         try(Connection conn = DriverManager.getConnection(DB_CONNECTION_URL, USER, PASSWORD)){
 
             String deleteSQLTemplate = "DELETE FROM %s WHERE %s = ? AND %s = ?";
-            String deleteSQL = String.format(deleteSQLTemplate, TABLE_NAME, TASK_COL, PRIORITY_COL);
+            String deleteSQL = String.format(deleteSQLTemplate, TABLE_NAME, PRIORITY_COL, TASK_COL);
             System.out.println("The SQL for the prepared statement is " + deleteSQL);
             PreparedStatement deletePreparedStatement = conn.prepareStatement(deleteSQL);
-            deletePreparedStatement.setDouble(1, item.priority);
             deletePreparedStatement.setString(2, item.task);
+            deletePreparedStatement.setInt(1, item.priority);
+
 
             System.out.println(deletePreparedStatement.toString());
 
@@ -80,14 +81,15 @@ public class DB {
     }
 
 
-    void addItem(Item item)  {
-
+    void addItem(String tablename, Item item)  {
+            TABLE_NAME = tablename;
         try (Connection conn = DriverManager.getConnection(DB_CONNECTION_URL, USER, PASSWORD)) {
 
             String addItemSQL = "INSERT INTO " + TABLE_NAME + " VALUES ( ? , ? ) " ;
             PreparedStatement addItemPS = conn.prepareStatement(addItemSQL);
-            addItemPS.setDouble(1, item.getPriority());
             addItemPS.setString(2, item.getTask());
+            addItemPS.setInt(1, item.getPriority());
+
 
             addItemPS.execute();
 
@@ -104,7 +106,7 @@ public class DB {
 
 
     ArrayList<Item> fetchAllRecords() {
-
+        //TABLE_NAME = tablename;
         ArrayList<Item> allRecords = new ArrayList();
 
         try (Connection conn = DriverManager.getConnection(DB_CONNECTION_URL, USER, PASSWORD);
@@ -114,10 +116,10 @@ public class DB {
             ResultSet rsAll = statement.executeQuery(selectAllSQL);
 
             while (rsAll.next()) {
-                double priority = rsAll.getDouble(PRIORITY_COL);
+                int priority = rsAll.getInt(PRIORITY_COL);
                 String task = rsAll.getString(TASK_COL);
                 Item item = new Item(task);
-                allRecords.add(item);
+                allRecords.add(priority, item);
             }
 
             rsAll.close();

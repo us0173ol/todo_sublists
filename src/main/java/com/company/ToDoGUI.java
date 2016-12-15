@@ -65,8 +65,8 @@ public class ToDoGUI extends JFrame {
                     listToAddTo.add(item);
                     controller.listUpdated(listToAddTo);
                     displayAllLists();
-                    addToSublistsButton.setText("Add to\n" + listToAddTo.name);
-                    controller.addTaskToDatabase(item);
+                    addToSublistsButton.setText("Add to\n " + listToAddTo.name);
+                    controller.addTaskToDatabase(listToAddTo,item);
                     newItemTask.setText("");
                     newItemTask.grabFocus();
 
@@ -99,16 +99,22 @@ public class ToDoGUI extends JFrame {
                 sublists.add(newList);
                 setSublists(sublists);
                 mainToDoListPanel.updateComboBox();
+
                 
             }
         });
         sublistTabbedPane.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
-
-                List selectedList = sublists.get(sublistTabbedPane.getSelectedIndex());
-                addToSublistsButton.setText("Add to\n " + selectedList.name);
-                mainToDoListPanel.updateComboBox();
+                if(sublistTabbedPane.getTabCount() > 1) {
+                    List selectedList = sublists.get(sublistTabbedPane.getSelectedIndex());
+                    addToSublistsButton.setText("Add to\n " + selectedList.name);
+                    mainToDoListPanel.updateComboBox();
+                }else{
+                    addToSublistsButton.setText("Add to " + mainToDoListPanel.getSelectedItem().task);
+//                    String tabName = mainToDoListPanel.getSelectedItem().getTask();
+//                    sublistTabbedPane.addTab(tabName,sublistPanel);
+                }
             }
         });
     }
@@ -128,12 +134,14 @@ public class ToDoGUI extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 //todo validate something is entered, clear JTextField after entry added
                 if(newItemTask != null) {
+                    List list = new List(mainList.name, true);
                     Item item = new Item(newItemTask.getText());
                     mainList.add(item);
                     controller.listUpdated(mainList);
                     displayAllLists();
                     mainToDoListPanel.updateComboBox();
-                    controller.addTaskToDatabase(item);
+                    controller.addTaskToDatabase(list,item);
+                    System.out.println("Added " + item + " to " + list);
                     newItemTask.setText("");
                     newItemTask.grabFocus();
 
