@@ -51,32 +51,33 @@ public class ToDoGUI extends JFrame {
         setSize(600,400);
         setVisible(true);
 
-
+        //just sets the button for adding to sublists text
         if(sublistTabbedPane.getSelectedIndex() != -1) {
             List selectedList = sublists.get(sublistTabbedPane.getSelectedIndex());
             addToSublistsButton.setText("Add to\n " + selectedList.name);
-        }
+        }//what to do when adding an item to a sublist
         addToSublistsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(newItemTask != null){
+                if(newItemTask != null){//check if textfield is empty, if not...
                     Item item = new Item(newItemTask.getText());
-                    List listToAddTo = sublists.get(sublistTabbedPane.getSelectedIndex());
-                    listToAddTo.add(item);
+                    List listToAddTo = sublists.get(sublistTabbedPane.getSelectedIndex());//determines the listname to add to
+                    listToAddTo.add(item);//adds the item to the proper list
                     controller.listUpdated(listToAddTo);
                     displayAllLists();
                     addToSublistsButton.setText("Add to\n " + listToAddTo.name);
-                    controller.addTaskToDatabase(listToAddTo,item);
-                    newItemTask.setText("");
-                    newItemTask.grabFocus();
+                    controller.addTaskToDatabase(listToAddTo,item);//add to database
+                    newItemTask.setText("");//clear textfield
+                    newItemTask.grabFocus();//set the focus back to the textfield
 
                 }
             }
-        });
+        });//when you need a new list.
         newListButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                
+                /*there are two ways to do this, either pick an item from the main list, or
+                * use a dialog to force the user to enter a name*/
                 String listName;
                 Item selected = mainToDoListPanel.getSelectedItem();
                 if (selected != null) {
@@ -90,8 +91,7 @@ public class ToDoGUI extends JFrame {
                         return;
                     }
                 }
-                
-                //String listName = JOptionPane.showInputDialog(ToDoGUI.this, "Enter List Name", "");
+                /*once a name is selected for the new list, create and set it*/
                 List newList = new List(listName, false);
                 GenericToDoListPanel newSublist = new GenericToDoListPanel(newList, ToDoGUI.this);
                 sublistTabbedPane.add(newSublist);
@@ -103,17 +103,17 @@ public class ToDoGUI extends JFrame {
                 
             }
         });
+        /*listener for when different tabs are selected*/
         sublistTabbedPane.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
-                if(sublistTabbedPane.getTabCount() > 1) {
+                if(sublistTabbedPane.getTabCount() > 1) {//verifies there is a tab to be selected
                     List selectedList = sublists.get(sublistTabbedPane.getSelectedIndex());
                     addToSublistsButton.setText("Add to\n " + selectedList.name);
                     mainToDoListPanel.updateComboBox();
                 }else{
                     addToSublistsButton.setText("Add to " + mainToDoListPanel.getSelectedItem().task);
-//                    String tabName = mainToDoListPanel.getSelectedItem().getTask();
-//                    sublistTabbedPane.addTab(tabName,sublistPanel);
+//
                 }
             }
         });
@@ -130,7 +130,7 @@ public class ToDoGUI extends JFrame {
 
     private void addListeners() {
         addButton.addActionListener(new ActionListener() {
-            @Override
+            @Override // add items to the main list and to the database
             public void actionPerformed(ActionEvent e) {
                 //todo validate something is entered, clear JTextField after entry added
                 if(newItemTask != null) {

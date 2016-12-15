@@ -7,14 +7,14 @@ import java.util.Collections;
  * Created by clara on 12/8/16.
  */
 public class List {
-
+    //for each list there will be an arraylist of items
     ArrayList<Item> items;
     String name;
-
+    //determines if the list is the main or sublist(s)
     boolean isMainList;
-
+    //next item priority
     int newItemPriority;
-
+    //List constructor,
     List(String name, boolean isMainList) {
         this.name = name;
         items = new ArrayList<Item>();
@@ -27,26 +27,23 @@ public class List {
         items.add(item);
         newItemPriority++;
     }
-
+    /*method to change priority, determines whether the current priority is higher or lower
+    * than the new priority and that determines how to shift the list*/
     void changePriority(Item item, int newPriority) {
         int currentPriority = item.getPriority();
         item.setPriority(newPriority);
         if(newPriority < currentPriority) {
 
-            for( int i = newPriority-1; i < currentPriority-1; i++){
-                    //items.get(i).setPriority(item.getPriority()+1);
+            for (int i = newPriority - 1; i < currentPriority - 1; i++) {
                 items.get(i).adjustPriority(1);
-                System.out.println("ITCP: " + item);
-                System.out.println("Newpriority: " + newPriority);
 
             }
-            }
-        if(newPriority > currentPriority){
-            for(int i = currentPriority; i < newPriority; i++){
+        }
+        if(newPriority > currentPriority) {
+            for (int i = currentPriority; i < newPriority; i++) {
                 items.get(i).adjustPriority(-1);
             }
         }
-
         ArrayList<Item> newItemList = new ArrayList<Item>();
         for(int x = 0; x < items.size(); x++){
             newItemList.add(items.get(x));
@@ -58,13 +55,6 @@ public class List {
         for(Item i: newItemList){
             items.add(i);
         }
-
-
-        //todo - find item in the list of items
-        //todo change its priority to newPriority
-        //todo change any other items to the correct priority, to shift them up or down, as needed
-
-        //sort list
         Collections.sort(items);
     }
 
